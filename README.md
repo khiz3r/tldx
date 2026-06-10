@@ -11,7 +11,7 @@ echo "zoho" | ./tldx
 ## Install
 
 ```bash
-git clone https://github.com/you/tldx
+git clone https://github.com/khiz3r/tldx
 cd tldx
 go build -o tldx main.go
 ```
