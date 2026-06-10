@@ -3,9 +3,9 @@
 TLD permutation bruteforcer. Takes a domain, appends every known TLD, probes them all, returns hits.
 
 ```
-echo "zoho" | ./tldx
-./tldx -l domains.txt -o results.txt
-./tldx zoho -ua-type chrome -sc 200-299,403
+echo "example" | ./tldx
+tldx -l domains.txt -o results.txt
+tldx example -ua-type chrome -sc 200-299,403
 ```
 
 ## Install
@@ -43,18 +43,18 @@ echo example | tldx
 Trailing `.*` expands across all TLDs before probing:
 
 ```
-echo "social.zoho.*" | ./tldx
+echo "tldx.example.*" | ./tldx
 ```
 
-Probes `social.zoho.com`, `social.zoho.co.uk`, `social.zoho.com.au` ... (271 candidates).
+Probes `tldx.example.com`, `tldx.example.co.uk`, `tldx.example.com.au` ... (271 candidates).
 
 ## How depth works
 
 Each hit at depth N becomes a base for depth N+1:
 
 ```
-depth 1: zoho → zoho.com, zoho.net, zoho.co.uk ...
-depth 2: zoho.com → zoho.com.au, zoho.com.br ...
+depth 1: example → example.com, example.net, example.co.uk ...
+depth 2: example.com → example.com.au, example.com.br ...
 ```
 
 Default `-d 1` probes once and stops. Use `-d 0` only if you know what you're doing.
