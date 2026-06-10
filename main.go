@@ -287,13 +287,13 @@ func colorStatus(code int) string {
 // ─── WILDCARD EXPANSION ───────────────────────────────────────────────────────
 
 // expandWildcard handles patterns with * in them:
-//   social.zoho.*     → social.zoho.com, social.zoho.cn, ... (replace trailing .*)
-//   *.zoho.com        → [no expansion — prefix wildcard, skip with warning]
-//   social.zoho.com   → [no wildcard, return as-is for normal append mode]
+//   tldx.example.*     → tldx.example.com, tldx.example.cn, ... (replace trailing .*)
+//   *.example.com        → [no expansion — prefix wildcard, skip with warning]
+//   example.example.com   → [no wildcard, return as-is for normal append mode]
 //
 // Returns (expanded []string, wasWildcard bool)
 func expandWildcard(input string) ([]string, bool) {
-	// Trailing wildcard: social.zoho.*
+	// Trailing wildcard: tldx.example.*
 	if strings.HasSuffix(input, ".*") {
 		base := strings.TrimSuffix(input, ".*")
 		var expanded []string
@@ -303,15 +303,15 @@ func expandWildcard(input string) ([]string, bool) {
 		return expanded, true
 	}
 
-	// Leading wildcard: *.zoho.com — not supported for HTTP probing
+	// Leading wildcard: *.example.com — not supported for HTTP probing
 	// (would need a subdomain wordlist), warn and skip
 	if strings.HasPrefix(input, "*.") {
-		fmt.Fprintf(os.Stderr, "%s[!] Prefix wildcard '*.zoho.com' not supported — use subfinder/amass first, then pipe results here%s\n",
+		fmt.Fprintf(os.Stderr, "%s[!] Prefix wildcard '*.example.com' not supported — use subfinder/amass first, then pipe results here%s\n",
 			colorYellow, colorReset)
 		return nil, true
 	}
 
-	// Mid wildcard: social.*.com — not supported
+	// Mid wildcard: tldx.*.com — not supported
 	if strings.Contains(input, "*") {
 		fmt.Fprintf(os.Stderr, "%s[!] Unsupported wildcard pattern: %s — only trailing .* is supported%s\n",
 			colorYellow, input, colorReset)
@@ -528,7 +528,7 @@ func (e *Engine) Run(inputs []string) {
 	e.printBanner()
 
 	// Split inputs into:
-	//   wildcardExpanded — already concrete domains from patterns like social.zoho.*
+	//   wildcardExpanded — already concrete domains from patterns like tldx.example.*
 	//   normalQueue      — concrete domains that will have TLDs appended recursively
 	var wildcardExpanded []string
 	var normalQueue []string
